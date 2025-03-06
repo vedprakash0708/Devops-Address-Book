@@ -1,0 +1,17 @@
+- name: Configure Docker on New Server 
+  hosts : all
+  become : true
+  #connection : ssh
+  tasks :
+  - name : updating server with yum
+    command : sudo yum update
+  - name : install Docker
+    command : sudo yum install -y docker
+    become : yes
+    become_user : root
+  - name : Start Docker Service
+    command : sudo systemctl start docker
+    become : yes
+    become_user : root
+  - name : Deploy the image and run as a container
+    command : docker run -d -p 8080:8080 cbabu85/addbook:10.0
